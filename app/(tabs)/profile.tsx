@@ -1,11 +1,24 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { router } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { logout } from "../../config/authFunctions";
 
 export default function ProfileScreen() {
-  const handleLogout = () => {
-    // Add your logout logic here
-    router.replace('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      console.log("User logged out");
+      router.push("/");
+
+    } catch (err) {
+      console.error("Error during logout:", err);
+      Alert.alert(
+        "Logout Failed",
+        "An error occurred during logout. Please try again.",
+        [{ text: "OK" }]
+      );
+
+    }
   };
 
   const menuItems = [
