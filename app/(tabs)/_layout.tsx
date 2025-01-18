@@ -71,7 +71,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name='store'
         options={{
-          title: 'Store',
+          title: 'Daily Pack',
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name='shopping-cart' color={color} />
           ),
@@ -89,3 +89,5 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+
