@@ -42,18 +42,35 @@ router.get("/profile", verifyToken, async (req, res) => {
 // 2. Update User Profile
 router.put("/profile", verifyToken, async (req, res) => {
   const userId = req.user.uid;
-  const { nickname, avatar } = req.body;
+  const { nickname, avatar, charmId } = req.body;
 
-  if (!nickname && !avatar) {
+  if (!nickname && !avatar && charmId === undefined) {
     return res.status(400).send("No update data provided");
   }
 
   try {
     const userDoc = db.collection("users").doc(userId);
 
+    // Fetch the current user profile
+    const userSnapshot = await userDoc.get();
+    if (!userSnapshot.exists) {
+      return res.status(404).send("User not found");
+    }
+
+    const userData = userSnapshot.data();
+
+    let updatedInventory = userData.inventory || new Array(18).fill(0);
+    if (charmId !== undefined) {
+      if (charmId < 1 || charmId > 18) {
+        return res.status(400).send("Invalid Pokémon ID");
+      }
+      updatedInventory[charmId - 1] += 1; // Increment the count for the given Pokémon ID
+    }
+
     const updateData = {};
     if (nickname) updateData.nickname = nickname;
     if (avatar) updateData.avatar = avatar;
+    if (charmId !== undefined) updateData.inventory = updatedInventory;
 
     await userDoc.set(updateData, { merge: true });
     res.send("Profile updated successfully");
@@ -84,7 +101,8 @@ router.post("/profile", verifyToken, async (req, res) => {
     await userDoc.set({
       nickname,
       avatar: avatar || "default-avatar.png",
-      currency: 100, // Starting currency for new users
+      currency: 1, // Starting currency for new users
+      inventory: new Array(18).fill(0),
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
