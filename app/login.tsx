@@ -6,18 +6,20 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { login, signup, listenToAuthState } from '../config/authFunctions';
-import { User } from 'firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import { login, signup, listenToAuthState } from "../config/authFunctions";
+import { User } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCreateUser } from "@/hooks/useUsers";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isLogin, setIsLogin] = useState(true);
+  const { createUser, loading: creatingUser, error } = useCreateUser();
 
   useEffect(() => {
     const unsubscribe = listenToAuthState(async (authUser: User | null) => {
@@ -33,16 +35,16 @@ export default function LoginScreen() {
             displayName: authUser.displayName,
             photoURL: authUser.photoURL,
           };
-          await AsyncStorage.setItem('userData', JSON.stringify(userData));
+          await AsyncStorage.setItem("userData", JSON.stringify(userData));
         } catch (error) {
-          console.error('Error storing user data:', error);
+          console.error("Error storing user data:", error);
         }
       } else {
         // Remove user data when logged out
         try {
-          await AsyncStorage.removeItem('userData');
+          await AsyncStorage.removeItem("userData");
         } catch (error) {
-          console.error('Error removing user data:', error);
+          console.error("Error removing user data:", error);
         }
       }
     });
@@ -53,13 +55,13 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       const loggedInUser = await login(email, password);
-      console.log('User logged in:', loggedInUser.email);
+      console.log("User logged in:", loggedInUser.email);
     } catch (err) {
-      console.error('Error during login:', err);
+      console.error("Error during login:", err);
       Alert.alert(
-        'Login Failed',
-        'Please check your email and password and try again.',
-        [{ text: 'OK' }]
+        "Login Failed",
+        "Please check your email and password and try again.",
+        [{ text: "OK" }]
       );
     }
   };
@@ -67,13 +69,21 @@ export default function LoginScreen() {
   const handleSignup = async () => {
     try {
       const signedUpUser = await signup(email, password);
-      console.log('User signed up:', signedUpUser.email);
-    } catch (err) {
-      console.error('Error during signup:', err);
+      console.log("User signed up:", signedUpUser.email);
+      const token = await signedUpUser.getIdToken();
+
+      await createUser(); // Call the function to create the user in the backend
       Alert.alert(
-        'Signup Failed',
-        'An error occurred during signup. Please check your password is at least 6 characters and try again.',
-        [{ text: 'OK' }]
+        "Signup Success",
+        "Your account has been created successfully.",
+        [{ text: "OK" }]
+      );
+    } catch (err) {
+      console.error("Error during signup:", err);
+      Alert.alert(
+        "Signup Failed",
+        "An error occurred during signup. Please check your password is at least 6 characters and try again.",
+        [{ text: "OK" }]
       );
     }
   };
@@ -81,7 +91,7 @@ export default function LoginScreen() {
   if (loading) {
     return (
       <View style={styles.centeredContainer}>
-        <ActivityIndicator size='large' />
+        <ActivityIndicator size="large" />
         <Text>Loading...</Text>
       </View>
     );
@@ -108,17 +118,17 @@ export default function LoginScreen() {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.title}>{isLogin ? 'Login' : 'Signup'}</Text>
+      <Text style={styles.title}>{isLogin ? "Login" : "Signup"}</Text>
       <TextInput
         style={styles.input}
-        placeholder='Email'
-        autoCapitalize='none'
+        placeholder="Email"
+        autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
       />
       <TextInput
         style={styles.input}
-        placeholder='Password'
+        placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -127,7 +137,7 @@ export default function LoginScreen() {
         style={styles.button}
         onPress={isLogin ? handleLogin : handleSignup}
       >
-        <Text style={styles.buttonText}>{isLogin ? 'Login' : 'Signup'}</Text>
+        <Text style={styles.buttonText}>{isLogin ? "Login" : "Signup"}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -136,60 +146,60 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
   },
   button: {
-    backgroundColor: 'darkblue',
+    backgroundColor: "darkblue",
     padding: 15,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   centeredContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   toggleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 20,
   },
   toggleButton: {
     flex: 1,
     padding: 10,
     borderWidth: 1,
-    borderColor: 'darkblue',
-    alignItems: 'center',
+    borderColor: "darkblue",
+    alignItems: "center",
     borderRadius: 5,
     marginHorizontal: 5,
   },
   activeToggle: {
-    backgroundColor: 'darkblue',
+    backgroundColor: "darkblue",
   },
   toggleText: {
-    color: 'darkblue',
-    fontWeight: 'bold',
+    color: "darkblue",
+    fontWeight: "bold",
   },
   activeText: {
-    color: 'white',
+    color: "white",
   },
 });

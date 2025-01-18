@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { getAuth } from 'firebase/auth';
-import { useUser } from './useUser';
-import { mockCharms } from '@/src/constants/constants';
+import { useState, useEffect } from "react";
+import { getAuth } from "firebase/auth";
+import { useUser } from "./useUser";
+import { mockCharms } from "@/src/constants/constants";
 
 interface Charm {
   id: number;
@@ -16,27 +16,26 @@ export function useCharms() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-
     async function fetchCharms() {
       try {
         const auth = getAuth();
         const user = auth.currentUser;
 
         if (!user) {
-          setError('User not authenticated');
+          setError("User not authenticated");
           setLoading(false);
           return;
         }
 
         const token = await user.getIdToken();
-        const response = await fetch('http://localhost:3000/api/user/profile', {
+        const response = await fetch("http://localhost:3000/api/user/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch profile');
+          throw new Error("Failed to fetch profile");
         }
 
         const data = await response.json();
@@ -57,7 +56,7 @@ export function useCharms() {
 
         setCharms(charmsData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
