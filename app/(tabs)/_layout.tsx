@@ -4,7 +4,7 @@ import { listenToAuthState } from "../../config/authFunctions";
 import LoginScreen from "../login";
 import { User } from "firebase/auth";
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 
 export default function TabLayout() {
 
@@ -53,7 +53,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name='index'
         options={{
-          title: 'Active Wallpaper',
+          title: 'Shaker',
           tabBarIcon: ({ color }) => (
             <FontAwesome size={28} name='image' color={color} />
           ),
