@@ -127,4 +127,32 @@ router.delete("/profile", verifyToken, async (req, res) => {
   }
 });
 
+// 5. Update User Currency
+router.put("/profile/currency", verifyToken, async (req, res) => {
+  const userId = req.user.uid;
+  const { currency } = req.body;
+
+  if (currency === undefined || (currency !== 0 && currency !== 1)) {
+    return res.status(400).send("Currency must be either 0 or 1");
+  }
+
+  try {
+    const userDoc = db.collection("users").doc(userId);
+
+    // Fetch the current user profile
+    const userSnapshot = await userDoc.get();
+    if (!userSnapshot.exists) {
+      return res.status(404).send("User profile not found");
+    }
+
+    // Update currency field
+    await userDoc.set({ currency }, { merge: true });
+
+    res.send(`Currency updated to ${currency}`);
+  } catch (error) {
+    console.error("Error updating user currency:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 module.exports = router;
