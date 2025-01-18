@@ -6,10 +6,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCharms } from '@/hooks/useCharms';
-
-const inventoryCount = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 function CharmsScreen() {
   const numColumns = 3;
@@ -55,14 +52,6 @@ function CharmsScreen() {
       </View>
       <View style={styles.paddingSection} />
     </ScrollView>
-  );
-}
-
-function WallpapersScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Wallpapers Collection</Text>
-    </View>
   );
 }
 
