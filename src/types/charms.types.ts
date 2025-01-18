@@ -1,12 +1,11 @@
-export interface Charm {
-    id: string;
-    name: string;
-    theme: string;
-    rarity: string;
-    imageUrl: string;
-    physics: {
-      radius: number;
-      density: number;
-      restitution: number;
-    };
+import Matter from 'matter-js';
+
+export interface CharmPosition {
+  x: number;
+  y: number;
+  angle: number;
+}
+
+export interface CharmPositions {
+  [id: string]: CharmPosition;
 }

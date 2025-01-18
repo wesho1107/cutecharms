@@ -1,24 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Dimensions } from 'react-native';
 import Matter from 'matter-js';
 import { GameEngine } from 'react-native-game-engine';
 import { usePhysicsContext } from '../../contexts/PhysicsContext';
 import { PHYSICS_CONFIG } from '../../constants/physics.constants';
+import Physics from './Physics';
+import Charm from './Charm';
+import { usePhysicsAnimation } from '@/src/hooks/usePhysicsAnimation';
 
 const { width, height } = Dimensions.get('window');
 
-const Physics = (entities: any, { time }: { time: { delta: number } }) => {
-  const engine = entities.physics.engine;
-  Matter.Engine.update(engine, time.delta);
-  return entities;
-};
-
 interface PhysicsWorldProps {
-  children: React.ReactNode;
+  charms: Matter.Body[];
 }
 
-export const PhysicsWorld: React.FC<PhysicsWorldProps> = ({ children }) => {
+export const PhysicsWorld: React.FC<PhysicsWorldProps> = ({ charms }) => {
   const { engine } = usePhysicsContext();
+  const positions = usePhysicsAnimation(engine, charms);
 
   useEffect(() => {
     // Create boundaries
@@ -39,11 +37,22 @@ export const PhysicsWorld: React.FC<PhysicsWorldProps> = ({ children }) => {
     <GameEngine
       style={{ flex: 1 }}
       systems={[Physics]}
+      running={true}
       entities={{
-        physics: { engine }
+        physics: { engine: engine, world: engine.world },
+        charms: { bodies: charms }
       }}
     >
-      {children}
+      {charms.map((charm, index) => (
+        <Charm
+          key={charm.id}
+          position={positions[charm.id] || {
+            x: charm.position.x,
+            y: charm.position.y,
+            angle: charm.angle
+          }}
+        />
+      ))}
     </GameEngine>
   );
 };
