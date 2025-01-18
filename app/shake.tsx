@@ -5,7 +5,8 @@ import { usePhysicsContext } from '../src/contexts/PhysicsContext';
 import { PHYSICS_CONFIG } from '../src/constants/physics.constants';
 import Matter from 'matter-js';
 import { useState } from 'react';
-import Charm from '@/src/components/physics/Charm';
+
+let nextId = 0;
 
 export default function ShakeScreen() {
   const [charms, setCharms] = useState<Matter.Body[]>([]);
@@ -17,7 +18,8 @@ export default function ShakeScreen() {
       Math.random() * 300 + 50,
       Math.random() * 300 + 50,
       20,
-      {
+      {        
+        id: nextId++,  // Add unique id to each charm
         restitution: PHYSICS_CONFIG.bounce,
         friction: PHYSICS_CONFIG.friction,
         frictionAir: PHYSICS_CONFIG.airFriction,
@@ -31,11 +33,7 @@ export default function ShakeScreen() {
 
   return (
     <View style={styles.container}>
-      <PhysicsWorld>
-        {charms.map((charm, index) => (
-          <Charm key={index} position={charm.position} angle={charm.angle} />
-        ))}
-      </PhysicsWorld>
+      <PhysicsWorld charms={charms}/>
       <TouchableOpacity style={styles.addButton} onPress={addCharm}>
         <Text style={styles.buttonText}>Add Charm</Text>
       </TouchableOpacity>
