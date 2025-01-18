@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Dimensions } from 'react-native';
+import React, { useEffect } from 'react';
+import { Dimensions } from 'react-native';
 import Matter from 'matter-js';
 import { GameEngine } from 'react-native-game-engine';
 import { usePhysicsContext } from '../../contexts/PhysicsContext';
-import { PHYSICS_CONFIG } from '../../constants/physics.constants';
 import Physics from './Physics';
 import Charm from './Charm';
 import { usePhysicsAnimation } from '@/src/hooks/usePhysicsAnimation';

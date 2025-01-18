@@ -1,4 +1,3 @@
-// src/hooks/useDeviceMotion.ts
 import { useEffect } from 'react';
 import { DeviceMotion } from 'expo-sensors';
 import { usePhysicsContext } from '../contexts/PhysicsContext';

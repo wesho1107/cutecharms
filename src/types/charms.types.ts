@@ -1,5 +1,3 @@
-import Matter from 'matter-js';
-
 export interface CharmPosition {
   x: number;
   y: number;
