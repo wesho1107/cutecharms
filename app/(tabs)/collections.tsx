@@ -1,13 +1,55 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
 
+// Temporary mock data - replace with actual charm data later
+const mockCharms = [
+  { id: 1, image: require('@/assets/charms/animal1.png'), name: 'Animal 1' },
+  { id: 2, image: require('@/assets/charms/animal2.png'), name: 'Animal 2' },
+  { id: 3, image: require('@/assets/charms/animal3.png'), name: 'Animal 3' },
+  { id: 4, image: require('@/assets/charms/animal4.png'), name: 'Animal 4' },
+  { id: 5, image: require('@/assets/charms/animal5.png'), name: 'Animal 5' },
+  { id: 6, image: require('@/assets/charms/animal6.png'), name: 'Animal 6' },
+  { id: 7, image: require('@/assets/charms/animal7.png'), name: 'Animal 7' },
+  { id: 8, image: require('@/assets/charms/animal8.png'), name: 'Animal 8' },
+  { id: 9, image: require('@/assets/charms/animal9.png'), name: 'Animal 9' },
+  { id: 10, image: require('@/assets/charms/emotion1.png'), name: 'Emotion 1' },
+  { id: 11, image: require('@/assets/charms/emotion2.png'), name: 'Emotion 2' },
+  { id: 12, image: require('@/assets/charms/emotion3.png'), name: 'Emotion 3' },
+  { id: 13, image: require('@/assets/charms/emotion4.png'), name: 'Emotion 4' },
+  { id: 14, image: require('@/assets/charms/emotion5.png'), name: 'Emotion 5' },
+  { id: 15, image: require('@/assets/charms/emotion6.png'), name: 'Emotion 6' },
+  { id: 16, image: require('@/assets/charms/emotion7.png'), name: 'Emotion 7' },
+  { id: 17, image: require('@/assets/charms/emotion8.png'), name: 'Emotion 8' },
+  { id: 18, image: require('@/assets/charms/emotion9.png'), name: 'Emotion 9' },
+];
+
 function CharmsScreen() {
+  const numColumns = 3;
+  const screenWidth = Dimensions.get('window').width;
+  const itemWidth = (screenWidth - 80) / numColumns;
+
   return (
-    <View style={styles.container}>
-      <Text>Charms Collection</Text>
-    </View>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.charmsContainer}>
+        {mockCharms.map((charm) => (
+          <View key={charm.id} style={[styles.charmItem, { width: itemWidth }]}>
+            <View style={styles.charmImageContainer}>
+              <Image source={charm.image} style={styles.charmImage} />
+            </View>
+            <Text style={styles.charmName}>{charm.name}</Text>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -47,7 +89,7 @@ const styles = StyleSheet.create({
   tabBar: {
     elevation: 0,
     backgroundColor: 'transparent',
-    marginTop: 20,
+    marginVertical: 10,
     marginHorizontal: 16,
   },
   tabItem: {
@@ -69,5 +111,44 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     paddingHorizontal: 16,
     paddingVertical: 8,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  charmsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 16,
+  },
+  charmItem: {
+    aspectRatio: 1,
+    alignItems: 'center',
+  },
+  charmImageContainer: {
+    width: '100%',
+    aspectRatio: 1,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  charmImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  charmName: {
+    marginTop: 8,
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
   },
 });

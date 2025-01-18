@@ -5,25 +5,16 @@ export default function RootLayout() {
   return (
     <PhysicsProvider>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen 
-          name="index"
+        <Stack.Screen
+          name='login'
           options={{
-            title: 'Shaker App',
-            headerShown: true,
+            title: 'Login',
           }}
         />
-        <Stack.Screen 
-          name="shake"
+        <Stack.Screen
+          name='(tabs)'
           options={{
-            title: 'Shake Screen',
-            headerShown: true,
-          }}
-        />
-        <Stack.Screen 
-          name="collection"
-          options={{
-            title: 'My Collection',
-            headerShown: true,
+            title: 'Tabs',
           }}
         />
       </Stack>

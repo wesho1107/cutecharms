@@ -1,7 +1,47 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs } from 'expo-router';
+import { Tabs, useNavigation } from 'expo-router';
+import { listenToAuthState } from "../../config/authFunctions";
+import Auth from "../login";
+import { User } from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from "react-native";
 
 export default function TabLayout() {
+
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = listenToAuthState((authUser: User | null) => {
+      setUser(authUser);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+      // Do your stuff here
+      navigation.dispatch(e.data.action);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (!user) {
+    return <Auth />;
+  }
+
   return (
     <Tabs
       screenOptions={{

@@ -9,7 +9,7 @@ interface PhysicsProviderProps {
 }
 
 export const PhysicsProvider: React.FC<PhysicsProviderProps> = ({ children }) => {
-  const [engine] = useState(() => Matter.Engine.create());
+  const [engine] = useState(() => Matter.Engine.create({ enableSleeping: false }));
 
   const addBody = (body: Matter.Body) => {
     Matter.World.add(engine.world, [body]);

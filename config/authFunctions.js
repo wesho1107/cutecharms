@@ -30,8 +30,6 @@ export const login = async (email, password) => {
       password
     );
     console.log("User logged in:", userCredential.user);
-    const token = await auth.currentUser.getIdToken();
-    console.log(token);
     return userCredential.user; // Returns the user object on success
   } catch (error) {
     console.error("Login error:", error.message);
