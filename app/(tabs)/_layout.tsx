@@ -1,7 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs, useNavigation } from 'expo-router';
 import { listenToAuthState } from "../../config/authFunctions";
-import Auth from "../login";
+import LoginScreen from "../login";
 import { User } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from "react-native";
@@ -39,7 +39,7 @@ export default function TabLayout() {
   }
 
   if (!user) {
-    return <Auth />;
+    return <LoginScreen />;
   }
 
   return (
