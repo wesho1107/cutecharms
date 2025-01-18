@@ -6,10 +6,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useCharms } from '@/hooks/useCharms';
-
-const Tab = createMaterialTopTabNavigator();
 
 function CharmsScreen() {
   const numColumns = 3;
@@ -35,45 +32,32 @@ function CharmsScreen() {
 
   return (
     <ScrollView style={styles.scrollView}>
+      <View style={styles.paddingSection} />
       <View style={styles.charmsContainer}>
         {charms.map((charm) => (
           <View key={charm.id} style={[styles.charmItem, { width: itemWidth }]}>
             <View style={styles.charmImageContainer}>
-              <Image source={charm.image} style={styles.charmImage} />
+              <Image
+                source={charm.image}
+                style={[
+                  styles.charmImage,
+                  charm.quantity <= 0 && styles.greyedOutImage,
+                ]}
+              />     
             </View>
             <Text style={styles.charmName}>{charm.name}</Text>
             <Text style={styles.charmQuantity}>x{charm.quantity}</Text>
           </View>
         ))}
       </View>
+      <View style={styles.paddingSection} />
     </ScrollView>
-  );
-}
-
-function WallpapersScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Wallpapers Collection</Text>
-    </View>
   );
 }
 
 export default function CollectionsTab() {
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: styles.tabBar,
-        tabBarIndicator: () => null,
-        tabBarItemStyle: styles.tabItem,
-        tabBarLabelStyle: styles.tabBarLabel,
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#A0A0A0',
-        tabBarPressColor: 'transparent',
-      }}
-    >
-      <Tab.Screen name='Charms' component={CharmsScreen} />
-      <Tab.Screen name='Wallpapers' component={WallpapersScreen} />
-    </Tab.Navigator>
+    <CharmsScreen />
   );
 }
 
@@ -82,6 +66,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  paddingSection: {
+    height: 20,
+  },
+  greyedOutImage: {
+    opacity: 0.3,
   },
   tabBar: {
     elevation: 0,

@@ -5,9 +5,11 @@ import { usePhysicsContext } from '../../src/contexts/PhysicsContext';
 import { PHYSICS_CONFIG } from '../../src/constants/physics.constants';
 import Matter from 'matter-js';
 import { useState } from 'react';
+import SelectionModal from '@/src/components/SelectionModal';
 
 export default function ShakeScreen() {
   const [charms, setCharms] = useState<Matter.Body[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const { addBody } = usePhysicsContext();
   useDeviceMotion();
 
@@ -33,7 +35,8 @@ export default function ShakeScreen() {
   return (
     <View style={styles.container}>
       <PhysicsWorld charms={charms} />
-      <TouchableOpacity style={styles.addButton} onPress={addCharm}>
+      <SelectionModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+      <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)}>
         <Text style={styles.buttonText}>Add Charm</Text>
       </TouchableOpacity>
     </View>
