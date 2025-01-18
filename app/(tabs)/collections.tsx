@@ -21,6 +21,15 @@ const mockCharms = [
   { id: 7, image: require('@/assets/charms/animal7.png'), name: 'Animal 7' },
   { id: 8, image: require('@/assets/charms/animal8.png'), name: 'Animal 8' },
   { id: 9, image: require('@/assets/charms/animal9.png'), name: 'Animal 9' },
+  { id: 10, image: require('@/assets/charms/emotion1.png'), name: 'Emotion 1' },
+  { id: 11, image: require('@/assets/charms/emotion2.png'), name: 'Emotion 2' },
+  { id: 12, image: require('@/assets/charms/emotion3.png'), name: 'Emotion 3' },
+  { id: 13, image: require('@/assets/charms/emotion4.png'), name: 'Emotion 4' },
+  { id: 14, image: require('@/assets/charms/emotion5.png'), name: 'Emotion 5' },
+  { id: 15, image: require('@/assets/charms/emotion6.png'), name: 'Emotion 6' },
+  { id: 16, image: require('@/assets/charms/emotion7.png'), name: 'Emotion 7' },
+  { id: 17, image: require('@/assets/charms/emotion8.png'), name: 'Emotion 8' },
+  { id: 18, image: require('@/assets/charms/emotion9.png'), name: 'Emotion 9' },
 ];
 
 function CharmsScreen() {
@@ -80,7 +89,7 @@ const styles = StyleSheet.create({
   tabBar: {
     elevation: 0,
     backgroundColor: 'transparent',
-    marginTop: 20,
+    marginVertical: 10,
     marginHorizontal: 16,
   },
   tabItem: {
@@ -105,13 +114,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
   },
   charmsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    padding: 16,
     gap: 16,
   },
   charmItem: {
