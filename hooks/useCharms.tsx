@@ -29,7 +29,7 @@ export function useCharms() {
         }
 
         const token = await user.getIdToken();
-        const response = await fetch('http://localhost:3000/api/users/profile', {
+        const response = await fetch('http://localhost:3000/api/user/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
