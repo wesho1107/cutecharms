@@ -1,7 +1,18 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs } from 'expo-router';
+import { Tabs, useNavigation } from 'expo-router';
+import { useEffect } from 'react';
 
 export default function TabLayout() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', (e) => {
+      e.preventDefault();
+      // Do your stuff here
+      navigation.dispatch(e.data.action);
+    });
+  }, []);
+
   return (
     <Tabs
       screenOptions={{
