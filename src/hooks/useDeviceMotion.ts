@@ -1,4 +1,3 @@
-// src/hooks/useDeviceMotion.ts
 import { useEffect } from 'react';
 import { DeviceMotion } from 'expo-sensors';
 import { usePhysicsContext } from '../contexts/PhysicsContext';
@@ -20,7 +19,7 @@ export const useDeviceMotion = () => {
           if (accelerationIncludingGravity) {
             // Scale and invert acceleration for realistic feel
             // Note: Coordinates might need adjustment based on device orientation
-            engine.gravity.x = (accelerationIncludingGravity.x || 0) * -0.1;
+            engine.gravity.x = (accelerationIncludingGravity.x || 0) * 0.1;
             engine.gravity.y = (accelerationIncludingGravity.y || 0) * -0.1;
           }
         });
