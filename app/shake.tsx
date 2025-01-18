@@ -5,6 +5,7 @@ import { usePhysicsContext } from '../src/contexts/PhysicsContext';
 import { PHYSICS_CONFIG } from '../src/constants/physics.constants';
 import Matter from 'matter-js';
 import { useState } from 'react';
+import Charm from '@/src/components/physics/Charm';
 
 export default function ShakeScreen() {
   const [charms, setCharms] = useState<Matter.Body[]>([]);
@@ -23,7 +24,7 @@ export default function ShakeScreen() {
         density: PHYSICS_CONFIG.density,
       }
     );
-    
+
     addBody(charm);
     setCharms(prev => [...prev, charm]);
   };
@@ -32,19 +33,7 @@ export default function ShakeScreen() {
     <View style={styles.container}>
       <PhysicsWorld>
         {charms.map((charm, index) => (
-          <View
-            key={index}
-            style={[
-              styles.charm,
-              {
-                transform: [
-                  { translateX: charm.position.x - 20 },
-                  { translateY: charm.position.y - 20 },
-                  { rotate: `${charm.angle}rad` }
-                ]
-              }
-            ]}
-          />
+          <Charm key={index} position={charm.position} angle={charm.angle} />
         ))}
       </PhysicsWorld>
       <TouchableOpacity style={styles.addButton} onPress={addCharm}>
