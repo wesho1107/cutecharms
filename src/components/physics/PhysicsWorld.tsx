@@ -6,6 +6,7 @@ import { usePhysicsContext } from '../../contexts/PhysicsContext';
 import Physics from './Physics';
 import Charm from './Charm';
 import { usePhysicsAnimation } from '@/src/hooks/usePhysicsAnimation';
+import { mockCharms } from '@/src/constants/constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -44,6 +45,7 @@ export const PhysicsWorld: React.FC<PhysicsWorldProps> = ({ charms }) => {
     >
       {charms.map((charm, index) => (
         <Charm
+          source={mockCharms[index % mockCharms.length].image}
           key={charm.id}
           position={positions[charm.id] || {
             x: charm.position.x,

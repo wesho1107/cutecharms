@@ -7,45 +7,42 @@ import {
   Dimensions,
 } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useCharms } from '@/hooks/useCharms';
 
 const Tab = createMaterialTopTabNavigator();
-
-// Temporary mock data - replace with actual charm data later
-const mockCharms = [
-  { id: 1, image: require('@/assets/charms/animal1.png'), name: 'Animal 1' },
-  { id: 2, image: require('@/assets/charms/animal2.png'), name: 'Animal 2' },
-  { id: 3, image: require('@/assets/charms/animal3.png'), name: 'Animal 3' },
-  { id: 4, image: require('@/assets/charms/animal4.png'), name: 'Animal 4' },
-  { id: 5, image: require('@/assets/charms/animal5.png'), name: 'Animal 5' },
-  { id: 6, image: require('@/assets/charms/animal6.png'), name: 'Animal 6' },
-  { id: 7, image: require('@/assets/charms/animal7.png'), name: 'Animal 7' },
-  { id: 8, image: require('@/assets/charms/animal8.png'), name: 'Animal 8' },
-  { id: 9, image: require('@/assets/charms/animal9.png'), name: 'Animal 9' },
-  { id: 10, image: require('@/assets/charms/emotion1.png'), name: 'Emotion 1' },
-  { id: 11, image: require('@/assets/charms/emotion2.png'), name: 'Emotion 2' },
-  { id: 12, image: require('@/assets/charms/emotion3.png'), name: 'Emotion 3' },
-  { id: 13, image: require('@/assets/charms/emotion4.png'), name: 'Emotion 4' },
-  { id: 14, image: require('@/assets/charms/emotion5.png'), name: 'Emotion 5' },
-  { id: 15, image: require('@/assets/charms/emotion6.png'), name: 'Emotion 6' },
-  { id: 16, image: require('@/assets/charms/emotion7.png'), name: 'Emotion 7' },
-  { id: 17, image: require('@/assets/charms/emotion8.png'), name: 'Emotion 8' },
-  { id: 18, image: require('@/assets/charms/emotion9.png'), name: 'Emotion 9' },
-];
 
 function CharmsScreen() {
   const numColumns = 3;
   const screenWidth = Dimensions.get('window').width;
   const itemWidth = (screenWidth - 80) / numColumns;
+  const { charms, loading, error } = useCharms();
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>Error: {error}</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.charmsContainer}>
-        {mockCharms.map((charm) => (
+        {charms.map((charm) => (
           <View key={charm.id} style={[styles.charmItem, { width: itemWidth }]}>
             <View style={styles.charmImageContainer}>
               <Image source={charm.image} style={styles.charmImage} />
             </View>
             <Text style={styles.charmName}>{charm.name}</Text>
+            <Text style={styles.charmQuantity}>x{charm.quantity}</Text>
           </View>
         ))}
       </View>
@@ -147,6 +144,11 @@ const styles = StyleSheet.create({
   },
   charmName: {
     marginTop: 8,
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+  },
+  charmQuantity: {
     fontSize: 12,
     color: '#666',
     textAlign: 'center',
