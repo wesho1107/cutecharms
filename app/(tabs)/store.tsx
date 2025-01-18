@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -36,10 +37,25 @@ function getRandomCharm(rangeStart: number, rangeEnd: number) {
 const CharmBox = ({ rangeStart, rangeEnd, currency, onBoxClick }: { rangeStart: number; rangeEnd: number; currency: number; onBoxClick: () => void; }) => {
   const [selectedCharm, setSelectedCharm] = useState<{ id: number; image: any; name: string } | null>(null);
 
+  const scale = useSharedValue(1);
+  const charmScale = useSharedValue(0);
+
+  const boxStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const charmStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: charmScale.value }],
+  }));
+
   const handlePress = () => {
     if (currency > 0) {
       const charm = getRandomCharm(rangeStart, rangeEnd);
       setSelectedCharm(charm);
+
+      scale.value = withTiming(0, { duration: 500, easing: Easing.out(Easing.quad) });
+      charmScale.value = withTiming(1, { duration: 500, easing: Easing.out(Easing.quad) });
+
       onBoxClick();
     }
   };
@@ -47,20 +63,18 @@ const CharmBox = ({ rangeStart, rangeEnd, currency, onBoxClick }: { rangeStart: 
   return (
     <View style={styles.container}>
       {selectedCharm ? (
-        <View style={styles.resultContainer}>
+        <Animated.View style={[styles.resultContainer, charmStyle]}>
           <Image source={selectedCharm.image} style={styles.resultImage} />
           <Text style={styles.resultText}>{selectedCharm.name}</Text>
-        </View>
+        </Animated.View>
       ) : (
-        <TouchableOpacity
-          style={[styles.box, currency === 0 && styles.disabledBox]}
-          onPress={handlePress}
-          disabled={currency === 0}
-        >
-          <Text style={styles.boxText}>Click To Open Your Daily Pack</Text>
-        </TouchableOpacity>
+        <Animated.View style={[styles.box, currency === 0 && styles.disabledBox, boxStyle]}>
+          <TouchableOpacity onPress={handlePress} disabled={currency === 0}>
+            <Text style={styles.boxText}>Click To Open Your Daily Pack</Text>
+          </TouchableOpacity>
+        </Animated.View>
       )}
-    </View>
+  </View>
   );
 };
 
