@@ -7,6 +7,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: 'darkblue',
         headerTitleAlign: 'center',
+        animation: 'shift',
       }}
     >
       <Tabs.Screen
