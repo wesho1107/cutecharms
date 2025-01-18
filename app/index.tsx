@@ -10,7 +10,7 @@ export default function Home() {
           <Text style={styles.buttonText}>Open Shaker</Text>
         </TouchableOpacity>
       </Link>
-      <Link href="/collection" asChild>
+      <Link href="/(tabs)" asChild>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>View Collection</Text>
         </TouchableOpacity>

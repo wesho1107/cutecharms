@@ -4,7 +4,7 @@ import { PhysicsProvider } from '../src/contexts/PhysicsContext';
 export default function RootLayout() {
   return (
     <PhysicsProvider>
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen 
           name="index"
           options={{
